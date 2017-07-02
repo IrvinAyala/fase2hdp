@@ -1,0 +1,54 @@
+<div class="easy-news-header uk-container uk-container-center uk-responsive-width" role="banner">
+  <div class="uk-grid uk-container-center uk-responsive-width uk-margin-top">
+    <div class="uk-width-medium-1-2">
+    {% if page.branding %}
+      <div class="uk-responsive-width uk-margin-top uk-margin-bottom">
+        {{ page.branding }}
+      </div>
+    {% endif %}
+    </div>
+    <div class="uk-width-medium-1-2">
+    {% if page.header_ad %}
+      <div class="uk-responsive-width uk-margin-top uk-margin-bottom">
+        {{ page.header_ad }}
+      </div>
+    {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="easy-news-main-menu uk-container uk-container-center uk-responsive-width">
+  <div class="uk-grid uk-responsive-width uk-visible-large">
+    <div class="uk-width-1-1">
+      <nav class="uk-navbar uk-responsive-width" role="navigation">
+        <div class="uk-float-right">
+        {% if page.social_icons %}
+          {{ page.social_icons }}
+        {% endif %}
+        </div>
+        <div class="uk-float-left">
+        {% if page.main_menu %}
+          {{ page.main_menu }}
+        {% endif %}
+        </div>
+      </nav>
+    </div>
+  </div>    
+  <div class="uk-hidden-large">
+    <nav class="uk-navbar" role="navigation">
+    {% if page.main_menu %}
+      <a href="#offcanvas" class="uk-navbar-toggle" data-uk-offcanvas="{mode:'slide'}"></a>
+      <div class="uk-offcanvas-bar">
+        {{ page.main_menu }}
+      </div>
+    {% endif %}
+    {% if page.social_icons %}
+      <div class="uk-margin-small-top uk-align-right uk-margin-right">
+        {{ page.social_icons }}
+      </div>
+    {% endif %}
+    </nav>
+  </div>
+  
+</div>
+
