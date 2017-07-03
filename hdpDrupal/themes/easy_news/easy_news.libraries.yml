@@ -1,0 +1,6 @@
+default:
+  version: 1.x
+  css:
+    theme:
+      css/fonts.css: {}
+      css/app.css: {}

@@ -1,0 +1,31 @@
+name: uikitty
+type: theme
+description: A building block theme using uikit awesomeness.
+# core: 8.x
+base theme: classy
+libraries:
+  - uikitty/global
+
+regions:
+  navigation: 'Navigation'
+  header: 'Branding'
+  mainmenu: 'Mainmenu'
+  highlighted: 'Highlighted'
+  help: 'Help'
+  slider: 'Slider'
+  content: 'Content'
+  sidebar_first: 'Primary'
+  sidebar_second: 'Secondary'
+  footer: 'Footer'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  offcanvas: 'Off-canvas'
+
+ckeditor_stylesheets:
+  - node_modules/uikit/dist/css/uikit.almost-flat.min.css
+
+# Information added by Drupal.org packaging script on 2017-04-13
+version: '8.x-2.2'
+core: '8.x'
+project: 'uikitty'
+datestamp: 1492043946

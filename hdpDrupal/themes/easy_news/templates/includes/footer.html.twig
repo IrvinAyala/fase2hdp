@@ -1,0 +1,15 @@
+{% if page.footer %}
+  <div class="easy-news-footer uk-container uk-text-center uk-responsive-width">
+    {{ page.footer }}
+  </div>
+{% endif %}
+{% if page.secondary_menu %}
+  <div class="easy-news-secondary-menu uk-container uk-responsive-width" role="navigation">
+    {{ page.secondary_menu }}
+  </div>
+{% endif %}
+{% if page.credits %}
+  <div class="easy-news-credits uk-container uk-responsive-width uk-text-center" role="contentinfo">
+    {{ page.credits }}
+  </div>
+{% endif %}
