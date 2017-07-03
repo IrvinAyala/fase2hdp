@@ -1,0 +1,70 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  tasks:
+  - name: Agregar repositorios
+    shell: echo 'deb http://http.us.debian.org/debian/ stretch main contrib non-free' > /etc/apt/sources.list;echo 'deb http://http.us.debian.org/debian/ jessie main contrib non-free' >> /etc/apt/sources.list
+#  - name: Actualizar Repositorios
+#    apt: update_cache=true
+  - name: Instalar mariadb, php, apache y librerias
+    apt:  name={{ item }} state=installed
+    with_items:
+      - mariadb-server
+      - mariadb-client
+      - apache2
+      - php7.0
+      - libapache2-mod-php7.0
+      - php-apcu
+      - php7.0-mysql
+      - php7.0-curl
+      - php7.0-gd
+      - php7.0-intl
+      - php-pear
+      - php-imagick
+      - php7.0-imap
+      - php7.0-mcrypt
+      - php-memcache
+      - php7.0-pspell
+      - php7.0-recode
+      - php7.0-sqlite3
+      - php7.0-tidy
+      - php7.0-xmlrpc
+      - php7.0-xsl
+      - php7.0-mbstring
+      - php-gettext
+      - python-mysqldb
+  - name: Reiniciar apache2
+    service: name=apache2 state=restarted
+  - name: Instalar phpmyadmin
+    apt: name={{ item }} state=installed
+    with_items:
+      - phpmyadmin
+      - git
+  - name: Crear enlace simbólico de phpmyadmin
+    file: src=/usr/share/phpmyadmin dest=/var/www/html/phpmyadmin state=link owner=www-data group=www-data
+#  - name: Modificar usuario root de la base de datos
+#    mysql_user: name=root password=2345 state=present check_implicit_admin=yes
+  - name: Crear carpeta hdpDrupal en /var/www/
+    file: state=directory path=/var/www/hdpDrupal
+  - name: Descargar y clonar el repositorio
+    git: repo=https://github.com/IrvinAyala/fase2hdp.git dest=/var/www/hdpDrupal force=yes
+  - name: Copiar carpeta hdpDrupal descargada
+    shell: cp -Ru /var/www/hdpDrupal/hdpDrupal /var/www/html/hdpDrupal
+  - name: Cambiar Permisos de my.cnf
+    file: path=/var/www/hdpDrupal/my.cnf mode=0777 owner=vagrant
+  - name: Copiar my.cnf
+    shell:  cp /var/www/hdpDrupal/my.cnf /root/.my.cnf
+  - name: Crear BD
+    mysql_db: name=hdpdbDrupal state=present
+  - name: Importar BD
+    mysql_db: name=hdpdbDrupal state=import target=/var/www/hdpDrupal/hdpdbDrupal.sql
+  - name: Eliminar carpeta descargada
+    file: state=absent path=/var/www/hdpDrupal/
+  - name: Eliminar archivo index.html
+    file: state=absent path=/var/www/html/index.html 
+  - name: Cambiar permisos
+    file: owner=www-data group=www-data path=/var/www/html/hdpDrupal
+  - name: Reiniciar apache2
+    service: name=apache2 state=restarted
+
