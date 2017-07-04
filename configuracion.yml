@@ -5,8 +5,8 @@
   tasks:
   - name: Agregar repositorios
     shell: echo 'deb http://http.us.debian.org/debian/ stretch main contrib non-free' > /etc/apt/sources.list;echo 'deb http://http.us.debian.org/debian/ jessie main contrib non-free' >> /etc/apt/sources.list
-#  - name: Actualizar Repositorios
-#    apt: update_cache=true
+  - name: Actualizar Repositorios
+    apt: update_cache=true
   - name: Instalar mariadb, php, apache y librerias
     apt:  name={{ item }} state=installed
     with_items:
@@ -39,12 +39,12 @@
   - name: Instalar phpmyadmin
     apt: name={{ item }} state=installed
     with_items:
-      - phpmyadmin
+      - phpmyadmin     
       - git
   - name: Crear enlace simbólico de phpmyadmin
     file: src=/usr/share/phpmyadmin dest=/var/www/html/phpmyadmin state=link owner=www-data group=www-data
-#  - name: Modificar usuario root de la base de datos
-#    mysql_user: name=root password=2345 state=present check_implicit_admin=yes
+  - name: Modificar usuario root de la base de datos
+    mysql_user: name=root password=2345 state=present
   - name: Crear carpeta hdpDrupal en /var/www/
     file: state=directory path=/var/www/hdpDrupal
   - name: Descargar y clonar el repositorio
@@ -59,6 +59,10 @@
     mysql_db: name=hdpdbDrupal state=present
   - name: Importar BD
     mysql_db: name=hdpdbDrupal state=import target=/var/www/hdpDrupal/hdpdbDrupal.sql
+  - name: ejecutar el script
+    script: scriptsql.sh
+  - name: Configurando url amigables
+    template: src=/var/www/hdpDrupal/apache2.conf dest=/etc/apache2/apache2.conf	
   - name: Eliminar carpeta descargada
     file: state=absent path=/var/www/hdpDrupal/
   - name: Eliminar archivo index.html
