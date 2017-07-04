@@ -46,29 +46,31 @@
   - name: Modificar usuario root de la base de datos
     mysql_user: name=root password=2345 state=present
   - name: Crear carpeta hdpDrupal en /var/www/
-    file: state=directory path=/var/www/hdpDrupal
+    file: state=directory path=/var/www/hdpDrupal owner=vagrant mode=0774
   - name: Descargar y clonar el repositorio
     git: repo=https://github.com/IrvinAyala/fase2hdp.git dest=/var/www/hdpDrupal force=yes
   - name: Copiar carpeta hdpDrupal descargada
     shell: cp -Ru /var/www/hdpDrupal/hdpDrupal /var/www/html/hdpDrupal
-  - name: Cambiar Permisos de my.cnf
-    file: path=/var/www/hdpDrupal/my.cnf mode=0777 owner=vagrant
+  - name: Cambiar Permisos de repositorio descargado
+    file: path=/var/www/hdpDrupal/ mode=0777 owner=vagrant recurse=yes
   - name: Copiar my.cnf
     shell:  cp /var/www/hdpDrupal/my.cnf /root/.my.cnf
   - name: Crear BD
     mysql_db: name=hdpdbDrupal state=present
   - name: Importar BD
     mysql_db: name=hdpdbDrupal state=import target=/var/www/hdpDrupal/hdpdbDrupal.sql
-  - name: ejecutar el script
-    script: scriptsql.sh
+  - name: Ejecutar Script para cambiar propiedades a usuario root en MariaDB
+    shell: /var/www/hdpDrupal/scriptsql.sh
   - name: Configurando url amigables
-    template: src=/var/www/hdpDrupal/apache2.conf dest=/etc/apache2/apache2.conf	
+    shell: cp /var/www/hdpDrupal/apache2.conf /etc/apache2/apache2.conf	
   - name: Eliminar carpeta descargada
     file: state=absent path=/var/www/hdpDrupal/
   - name: Eliminar archivo index.html
     file: state=absent path=/var/www/html/index.html 
   - name: Cambiar permisos
     file: owner=www-data group=www-data path=/var/www/html/hdpDrupal
+  - name: Habilitar Rewrite_module de apache
+    shell: a2enmod rewrite
   - name: Reiniciar apache2
     service: name=apache2 state=restarted
 
