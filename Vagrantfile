@@ -12,6 +12,8 @@ ansible.playbook = "configuracion.yml"
 end
 config.vm.network "public_network", bridge: "eth1"
 
+config.vm.box = "debian/jessie64"
+config.vm.box_url = "https://atlas.hashicorp.com/debian/boxes/jessie64/versions/8.7.0/providers/virtualbox.box"
 
 
 
@@ -21,7 +23,7 @@ config.vm.network "public_network", bridge: "eth1"
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search
-  config.vm.box = "jessie64hdp"
+  # config.vm.box = "jessie64hdp"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs

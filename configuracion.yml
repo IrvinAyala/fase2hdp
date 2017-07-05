@@ -47,7 +47,7 @@
     mysql_user: name=root password=2345 state=present
   - name: Crear carpeta hdpDrupal en /var/www/
     file: state=directory path=/var/www/hdpDrupal owner=vagrant mode=0774
-  - name: Descargar y clonar el repositorio
+  - name: Clonar el repositorio de GitHub
     git: repo=https://github.com/IrvinAyala/fase2hdp.git dest=/var/www/hdpDrupal force=yes
   - name: Copiar carpeta hdpDrupal descargada
     shell: cp -Ru /var/www/hdpDrupal/hdpDrupal /var/www/html/hdpDrupal
